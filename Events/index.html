@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #field {
+            width: 600px;
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        #ball {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            transition: all 1s;
+        }
+    </style>
+</head>
+<body>
+     <div id="field" style="background-image: url(./footbool.jpg);">
+        <img src="https://en.js.cx/clipart/ball.svg" alt="img" id="ball">
+     </div>
+
+     <script>
+        field.onclick = function (event) {
+        // координати поля щодо вікна браузера
+        let fieldCoords = this.getBoundingClientRect();
+        console.log(event);
+        console.log(field.clientLeft);
+        // м’яч має абсолютне позиціювання (position:absolute), поле -- відносне (position:relative)
+        // таким чином, координати м’яча розраховуються відносно внутрішнього, верхнього лівого кута поля.
+        let ballCoords = {
+          top:
+            event.clientY -
+            fieldCoords.top -
+            field.clientTop -
+            ball.clientHeight / 2,
+          left:
+            event.clientX -
+            fieldCoords.left -
+            field.clientLeft -
+            ball.clientWidth / 2,
+        };
+        
+        // забороняємо перетинати верхню межу поля
+        if (ballCoords.top < 0) ballCoords.top = 0;
+
+        // забороняємо перетинати ліву межу поля
+        if (ballCoords.left < 0) ballCoords.left = 0;
+
+        // забороняємо перетинати праву межу поля
+        if (ballCoords.left + ball.clientWidth > field.clientWidth) {
+          ballCoords.left = field.clientWidth - ball.clientWidth;
+        }
+
+        // забороняємо перетинати нижню межу поля
+        if (ballCoords.top + ball.clientHeight > field.clientHeight) {
+          ballCoords.top = field.clientHeight - ball.clientHeight;
+        }
+
+        ball.style.left = ballCoords.left + "px";
+        ball.style.top = ballCoords.top + "px";
+      };
+     </script>
+</body>
+</html>
